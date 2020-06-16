@@ -1,28 +1,67 @@
 import React, { useState } from 'react';
 import Form from './Form';
+import Member from './Member'
 import './App.css';
+
+const intialMemberList = [
+  {
+    id: Math.random(),
+    name: 'Tim',
+    email: 'tim@time.com',
+    role: 'Doctor',
+  },
+]
+
+const initialFormValues = {
+  name: '',
+  email: '',
+  role: '',
+}
 
 function App() {
 
-  const initialFriendsList = [
-    {
-      name: 'Tim',
-      email: 'tim@time.com',
-      role: 'Doctor',
-    },
-    {
-      name: 'Mark',
-      email: 'mark@mark.com',
-      role: 'Professional Truck Driver',
-    },
-  ]
+
+  const [memberList, setMemberList] = useState(intialMemberList);
+  const [formValues, setFormValues] = useState(initialFormValues);
 
 
-  const [memberList, setMemberList] = useState(initialFriendsList);
+  const onInputChange = (event => {
+    const { name, value } = event.target;
+
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    })
+  })
+
+  const onSubmit = (event => {
+    event.preventDefault();
+
+    const newMember = { ...formValues, id: Math.random()}
+
+    setMemberList(memberList => [newMember, ...memberList]);
+
+    setFormValues(initialFormValues)
+
+  })
 
   return (
     <div className="App">
-      <Form />
+      <Form
+        values={formValues}
+        onSubmit={onSubmit}
+        onInputChange={onInputChange}
+        
+      />
+
+      {
+        memberList.map(member => {
+          return (
+            <Member key={member.id} details={member} />
+          )
+        })
+      }
+
     </div>
   );
 }
