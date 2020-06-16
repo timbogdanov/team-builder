@@ -16,10 +16,9 @@ function App() {
     },
   ]
 
-  
+
   const [memberList, setMemberList] = useState(initialFriendsList);
-  
-  console.log(memberList)
+
   return (
     <div className="App">
 
